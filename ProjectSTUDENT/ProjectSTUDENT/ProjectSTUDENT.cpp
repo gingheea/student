@@ -33,7 +33,7 @@ const int Student::num_group_dat[DAT_SIZE]{ 12,23,31,11,4 };
 struct Group
 {
 	Student** group = nullptr;
-	int group_size = 0;
+	static const int group_size = 5;
 };
 void Create(Student*& student)
 {
@@ -74,7 +74,7 @@ void Init(Student* student)
 	student->num_group = Student::num_group_dat[rand() % 5];
 	for (int i = 0; i < Student::MARKS_SIZE; i++)
 	{
-		student->marks[i] = rand()%12+1;
+		student->marks[i] = rand()%12+3;
 	}
 }
 
@@ -123,16 +123,177 @@ void PrintGroup(const Group& group)
 	{
 		Print(group.group[i]);
 	}
-}
 
+}
+void arg_marks(Student** student)
+{
+	
+	double arg1 = 0;
+	double arg2 = 0;
+	double arg3 = 0;
+	double arg4 = 0;
+	double arg5 = 0;
+
+	for(int i=0;i< Group::group_size;i++)
+	{
+		if (student[i]->num_group == Student::num_group_dat[0])
+		{
+
+			for (int j = 0; j < Student::MARKS_SIZE; j++)
+			{
+				arg1 = arg1+ student[i]->marks[j];
+			}
+		}
+	}
+	arg1 = arg1 / Student::MARKS_SIZE;
+	if(arg1==0)
+	{
+		cout << "Nemaye studentiv z grypu 12";
+		cout << endl << endl;
+	}
+	else
+	{
+		cout << "Seredniy bal grypu 12: " << arg1;
+		cout << endl << endl;
+	}
+
+
+	for (int i = 0; i < Group::group_size; i++)
+	{
+		if (student[i]->num_group == Student::num_group_dat[1])
+		{
+
+			for (int j = 0; j < Student::MARKS_SIZE; j++)
+			{
+				arg2 = arg2 + student[i]->marks[j];
+			}
+		}
+	}
+	arg2 = arg2 / Student::MARKS_SIZE;
+	if(arg2==0)
+	{
+		cout << "Nemaye studentiv z grypu 23";
+		cout << endl << endl;
+	}
+	else
+	{
+		cout << "Seredniy bal grypu 23: " << arg2;
+		cout << endl << endl;
+	}
+	for (int i = 0; i < Group::group_size; i++)
+	{
+		if (student[i]->num_group == Student::num_group_dat[2])
+		{
+
+			for (int j = 0; j < Student::MARKS_SIZE; j++)
+			{
+				arg3 = arg3 + student[i]->marks[j];
+			}
+		}
+	}
+	arg3= arg3 / Student::MARKS_SIZE;
+	if (arg3 == 0)
+	{
+		cout << "Nemaye studentiv zgrypu 31";
+		cout << endl << endl;
+	}
+	else
+	{
+		cout << "Seredniy bal grypu 31: " << arg3;
+		cout << endl << endl;
+	}
+
+	for (int i = 0; i < Group::group_size; i++)
+	{
+		if (student[i]->num_group == Student::num_group_dat[3])
+		{
+
+			for (int j = 0; j < Student::MARKS_SIZE; j++)
+			{
+				arg4 = arg4 + student[i]->marks[j];
+			}
+		}
+	}
+	arg4 = arg4 / Student::MARKS_SIZE;
+	if(arg4==0)
+	{
+		cout << "Nemaye studentiv grypu 11";
+		cout << endl << endl;
+	}
+	else
+	{
+		cout << "Seredniy bal grypu 11: " << arg4;
+		cout << endl << endl;
+	}
+
+	for (int i = 0; i < Group::group_size; i++)
+	{
+		if (student[i]->num_group == Student::num_group_dat[4])
+		{
+
+			for (int j = 0; j < Student::MARKS_SIZE; j++)
+			{
+				arg5 = arg5 + student[i]->marks[j];
+			}
+		}
+	}
+	arg5 = arg5 / Student::MARKS_SIZE;
+	if(arg5==0)
+	{
+		cout << "Nemaye studentiv z grypu 4";
+		cout << endl << endl;
+	}
+	else
+	{
+		cout << "Seredniy bal grypu 4: " << arg5;
+		cout << endl << endl;
+	}
+}
+void sort_course(Student**& student)
+{
+	int j = 0;
+	Student* tmp = 0;
+	for (int i = 0; i < Group::group_size; i++)
+	{
+		j = i;
+		for (int k = i; k < Group::group_size; k++)
+		{
+
+			if (student[j]->course > student[k]->course)
+			{
+				j = k;
+			}
+			else if (student[j]->course == student[k]->course)
+			{
+
+
+				if (student[j]->lastName[0] > student[k]->lastName[0])
+				{
+					j = k;
+				}
+
+
+			}
+
+		}
+		tmp = student[i];
+		student[i] = student[j];
+		student[j] = tmp;
+	}
+}
 int main()
 {
 	srand(time(NULL));
 	Group group;
-	group.group_size = 5;
 	CreateGroup(group);
 	InitGroup(group);
 	PrintGroup(group);
+	sort_course(group.group);
+	cout << "__________________________________________________________"<<endl;
+	PrintGroup(group);
+	cout << "__________________________________________________________" << endl;
+	
+	arg_marks(group.group);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
