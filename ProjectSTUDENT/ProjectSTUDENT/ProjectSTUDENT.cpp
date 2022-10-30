@@ -2,7 +2,9 @@
 //
 
 #include <iostream>
+#include <ctime>
 
+using namespace std;
 struct Student
 {
 	static const int DAT_SIZE = 5;
@@ -31,11 +33,106 @@ const int Student::num_group_dat[DAT_SIZE]{ 12,23,31,11,4 };
 struct Group
 {
 	Student** group = nullptr;
-	int gruop_size = 0;
+	int group_size = 0;
 };
+void Create(Student*& student)
+{
+	if (student == nullptr)
+	{
+		student = new Student;
+	}
+
+	if (student->name != nullptr)
+	{
+		delete[] student->name;
+	}
+	if (student->lastName != nullptr)
+	{
+		delete[] student->lastName;
+	}
+	if (student->bat != nullptr)
+	{
+		delete[] student->bat;
+	}
+	student->name = new char[Student::STR_SIZE] {};
+	student->lastName = new char[Student::STR_SIZE] {};
+	student->bat = new char[Student::STR_SIZE] {};
+}
+
+void Init(Student* student)
+{
+	if (student == nullptr)
+	{
+		return;
+	}
+
+	strcpy_s(student->name, Student::STR_SIZE, Student::name_dat[rand() % 5]);
+	strcpy_s(student->lastName, Student::STR_SIZE, Student::lastName_dat[rand() % 5]);
+	strcpy_s(student->bat, Student::STR_SIZE, Student::bat_dat[rand() % 5]);
+	student->year =Student::year_dat[rand()%5];
+	student->course = Student::course_dat[rand() % 5];
+	student->num_group = Student::num_group_dat[rand() % 5];
+	for (int i = 0; i < Student::MARKS_SIZE; i++)
+	{
+		student->marks[i] = rand()%12+1;
+	}
+}
+
+void Print(Student* student)
+{
+	if (student == nullptr)
+	{
+		return;
+	}
+	cout << "------------------------------------" << endl;
+	cout << student->lastName << "  " << student->name <<"  " << student->bat << endl;
+	cout << " Birthday:  " << student->year << endl;
+	cout << " Course:  " << student->course << endl;
+	cout << " Nomer grypu:  " << student->num_group << endl;
+	cout << " Marks = ";
+	for (int i = 0; i < Student::MARKS_SIZE; i++)
+	{
+		cout << student->marks[i] << " ; ";
+	}
+	cout << endl;
+	cout << "------------------------------------" << endl;
+}
+void CreateGroup(Group& group)
+{
+	
+
+	group.group = new Student * [group.group_size] {};
+
+	for (int i = 0; i < group.group_size; i++)
+	{
+		Create(group.group[i]);
+	}
+}
+
+void InitGroup(const Group& group)
+{
+	for (int i = 0; i < group.group_size; i++)
+	{
+		Init(group.group[i]);
+	}
+}
+
+void PrintGroup(const Group& group)
+{
+	for (int i = 0; i < group.group_size; i++)
+	{
+		Print(group.group[i]);
+	}
+}
+
 int main()
 {
-   
+	srand(time(NULL));
+	Group group;
+	group.group_size = 5;
+	CreateGroup(group);
+	InitGroup(group);
+	PrintGroup(group);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
