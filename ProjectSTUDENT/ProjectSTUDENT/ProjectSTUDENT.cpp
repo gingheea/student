@@ -281,19 +281,73 @@ void sort_course(Student**& student)
 		student[j] = tmp;
 	}
 }
+int max_year_student(Student** student)
+{
+	int max = student[0]->year;
+	int coursor = 0;
+	int i = 0;
+	for (i = 1; i < Group::group_size; i++)
+	{
+		if (max>student[i]->year)
+		{
+			max = student[i]->year;
+			coursor = i;
+		}
+	}
+	return coursor;
+}
+int min_year_student(Student** student)
+{
+	int min = student[0]->year;
+	int coursor = 0;
+	int i = 0;
+	for (i = 1; i < Group::group_size; i++)
+	{
+		if (min < student[i]->year)
+		{
+			min = student[i]->year;
+			coursor = i;
+		}
+	}
+	return coursor;
+}
 int main()
 {
 	srand(time(NULL));
 	Group group;
 	CreateGroup(group);
 	InitGroup(group);
+	cout << "Ne sortovanuy: " << endl << endl;
 	PrintGroup(group);
 	sort_course(group.group);
 	cout << "__________________________________________________________"<<endl;
+	cout << "Sortovanuy: " << endl << endl;
 	PrintGroup(group);
 	cout << "__________________________________________________________" << endl;
-	
 	arg_marks(group.group);
+	cout << endl << endl;
+	cout << "Naystarh(uy)(i) student(u): ";
+	Print(group.group[max_year_student(group.group)]);
+	for(int i=0;i< Group::group_size;i++)
+	{
+		if(group.group[i]->year == group.group[max_year_student(group.group)]->year)
+		{
+			Print(group.group[i]);
+			cout << endl << endl;
+		}
+	}
+	cout << endl << endl;
+	cout << "Naymolodsh(uy)(i) student(u): ";
+	Print(group.group[min_year_student(group.group)]);
+	cout << endl << endl;
+	for (int i = 0; i < Group::group_size; i++)
+	{
+		if (group.group[i]->year == group.group[min_year_student(group.group)]->year)
+		{
+			Print(group.group[i]);
+			cout << endl << endl;
+		}
+	}
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
